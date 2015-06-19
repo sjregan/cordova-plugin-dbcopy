@@ -47,6 +47,14 @@ public class sqlDB extends CordovaPlugin {
 				callbackContext.sendPluginResult(plresult);
 			}
 			return true;
+		} else if (action.equalsIgnoreCase("exists")) {
+			String db = args.getString(0);
+			File path = cordova.getActivity().getDatabasePath(db);
+			
+			plresult = new PluginResult(PluginResult.Status.OK, path.exists());
+			callbackContext.sendPluginResult(plresult);
+			
+			return true;
 		} else {
 			plresult = new PluginResult(PluginResult.Status.INVALID_ACTION);
 			callbackContext.sendPluginResult(plresult);

@@ -3,6 +3,8 @@ cordova-plugin-dbcopy
 
 Add a prepopulated SQLite database in your Phonegap/Cordova Android and iOS app.
 
+This is a fork of [https://github.com/an-rahulpandey/cordova-plugin-dbcopy](cordova-plugin-dbcopy) with the addition of an exists function to check whether a database has already been copied to the default app directory. This has **not** been tested on Andrioid.
+
 ###Note
 
 The database file may have extensions or not for e.g the db file name would be sample.db or sample.sqlite or sample. It doesn't matter what is the file extension, just remember to use the whole filename with extensions(if having one otherwise not) as a paramter when passing to the plugin methods.
@@ -63,6 +65,21 @@ This method allows you to remove the database from the apps default database sto
 
     **error** -> function will be called if the there is some problem in removing the db or the file doesn't exists on the default database storage location.
 
+* ####Exists
+This method allows you to check if a database exists in the apps default database storage location.
+
+  ````
+    window.plugins.sqlDB.exists(dbname, location, success);
+  ````
+  Here -
+
+    **dbname** -> Is the name of the database you want to remove. If the database file is having any extension, please provide that also.
+
+    **location** -> The integer value for the location of database, see the copy method for options.
+
+    **success(exists)** -> function will be called when database existence has been determined. When exists parameter is true database was found.
+
+	
 ###Example Usage
 
 In your JavaScript or HTML use the following method -
@@ -104,6 +121,17 @@ function copyerror(e)
         //db already exists or problem in copying the db file. Check the Log.
         console.log("Error Code = "+JSON.stringify(e));
         //e.code = 516 => if db exists
+}
+
+function checkDb()
+{
+	window.plugins.sqlDB.exists("demo.db", 0, function (exists) {
+		if (exists) {
+			console.log('db exists');
+		} else {
+			console.log('db not found');
+		}
+	});
 }
 
 ```

@@ -24,4 +24,6 @@
 
 - (void)remove:(CDVInvokedUrlCommand*)command;
 
+- (void)exists:(CDVInvokedUrlCommand*)command;
+
 @end

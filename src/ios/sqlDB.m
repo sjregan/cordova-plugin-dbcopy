@@ -132,4 +132,40 @@
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
+-(void)exists:(CDVInvokedUrlCommand *)command
+{
+    int location = 0;
+    NSString *filename = [command argumentAtIndex:0];
+    location = [[command argumentAtIndex:1] intValue];
+    CDVPluginResult *result = nil;
+    
+    documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    libraryDirectory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    fileManager = [NSFileManager defaultManager];
+    
+    if (location == 0) {
+        dbPath = [documentsDirectory stringByAppendingPathComponent:filename];
+    } else if(location == 1) {
+        dbPath = [libraryDirectory stringByAppendingPathComponent:filename];
+    } else {
+        NSString *nosync = [libraryDirectory stringByAppendingPathComponent:@"LocalDatabase"];
+        dbPath = [nosync stringByAppendingPathComponent:filename];
+    }
+    
+    NSLog(@"[sqlDB] dbPath for exists= %@",dbPath);
+    
+    if([fileManager fileExistsAtPath:dbPath])
+    {
+		result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
+    }
+    else
+    {
+		result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:false];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
 @end
